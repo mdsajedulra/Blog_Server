@@ -3,8 +3,9 @@ import { userController } from "./user.controller";
 import validateRequest from "../../middlewares/validateRequest";
 import { UserSchema } from "./user.validation";
 
-const route = Router();
+const userRoute = Router();
 
-route.post("/", validateRequest(UserSchema), userController.createUser);
+userRoute.post("/", validateRequest(UserSchema), userController.createUser);
+userRoute.get("/", userController.getUser);
 
-export default route;
+export default userRoute;

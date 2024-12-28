@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import catchAsync from "../utils/catchAsync";
 import { AnyZodObject } from "zod";
 
@@ -7,6 +6,7 @@ const validateRequest = (schema: AnyZodObject) => {
     await schema.parseAsync({
       body: req.body,
     });
+    next();
   });
 };
 

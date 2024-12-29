@@ -18,6 +18,10 @@ const moduleRoutes = [
     path: "/user",
     route: userRoute,
   },
+  {
+    path: "/admin",
+    route: userRoute,
+  },
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

@@ -11,13 +11,21 @@ const createBlog = async (payload: IUser) => {
   return result;
 };
 
+// get all blogs
+
+const getBlogs = async () => {
+  const result = await Blog.find();
+  return result;
+};
+
 // update own blog using object id
 
 const updateBlog = async (payload: any) => {
   const { id, token, updateData } = payload;
   // console.log(id);
 
-  const findBlog = await Blog.findById(id.id);
+  const findBlog = await Blog.findById(id);
+
   if (findBlog) {
     // console.log(findBlog?.author);
     const findAuthor = await User.findById(findBlog?.author);
@@ -28,8 +36,8 @@ const updateBlog = async (payload: any) => {
 
       const { email, role } = decoded;
 
-      if (email === findAuthor?.email) {
-        const result = await Blog.findByIdAndUpdate(id.id, updateData, {
+      if (email === findAuthor?.email && role === findAuthor?.role) {
+        const result = await Blog.findByIdAndUpdate(id, updateData, {
           new: true,
         });
 
@@ -39,7 +47,6 @@ const updateBlog = async (payload: any) => {
       throw new Error(error.message);
     }
   }
-  return findBlog;
 
   // try {
   //   const decoded = jwt.verify(token, "secret"); // Replace "secret" with your actual secret key
@@ -51,11 +58,15 @@ const updateBlog = async (payload: any) => {
   // }
   // const result = await Blog.findByIdAndUpdate();
 };
+
 const deleteBlog = async (payload: any) => {
-  const { id, token, updateData } = payload;
+  const { id, token } = payload;
   // console.log(id);
 
-  const findBlog = await Blog.findById(id.id);
+  const findBlog = await Blog.findById(id);
+  if (!findBlog) {
+    throw new Error("Blog not found");
+  }
   if (findBlog) {
     // console.log(findBlog?.author);
     const findAuthor = await User.findById(findBlog?.author);
@@ -66,32 +77,64 @@ const deleteBlog = async (payload: any) => {
 
       const { email, role } = decoded;
 
-      if (email === findAuthor?.email) {
-        const result = await Blog.findByIdAndDelete(id.id, updateData);
+      if (email === findAuthor?.email && role === findAuthor?.role) {
+        const result = await Blog.findByIdAndDelete(id);
+
+        return result;
+      } else if (role === "admin") {
+        const result = await Blog.findByIdAndDelete(id);
 
         return result;
       }
     } catch (error: any) {
-      throw new Error(error.message);
+      throw new Error("Something went worng");
     }
   }
-  return findBlog;
-
-  // try {
-  //   const decoded = jwt.verify(token, "secret"); // Replace "secret" with your actual secret key
-
-  //   if (decoded?.email === "mdsajedulra@gmail.com") {
-  //   }
-  // } catch (error: unknown) {
-  //   console.error("Token verification failed:", error.message);
-  // }
-  // const result = await Blog.findByIdAndUpdate();
 };
 
 // delete own blog using blog id
 
+// const deleteBlog = async (payload: any) => {
+//   const { id, token } = payload;
+
+//   try {
+//     const findBlog = await Blog.findById(id);
+//     if (!findBlog) {
+//       throw new Error("Blog not found");
+//     }
+
+//     const findAuthor = await User.findById(findBlog.author);
+//     if (!findAuthor) {
+//       throw new Error("Author not found");
+//     }
+
+//     // Verify token
+//     const decoded = jwt.verify(token, "secret") as JwtPayload;
+//     const { email, role } = decoded;
+
+//     // Check if user is authorized
+//     if (email === findAuthor.email && role === findAuthor.role) {
+//       const result = await Blog.findByIdAndDelete(id);
+//       return { success: true, message: "Blog deleted successfully", result };
+//     } else if (role === "admin") {
+//       const result = await Blog.findByIdAndDelete(id);
+//       return {
+//         success: true,
+//         message: "Blog deleted successfully by admin",
+//         result,
+//       };
+//     } else {
+//       throw new Error("Unauthorized to delete this blog");
+//     }
+//   } catch (error: any) {
+//     console.error("Error:", error.message);
+//     return { success: false, message: error.message };
+//   }
+// };
+
 export const blogServices = {
   createBlog,
+  getBlogs,
   updateBlog,
   deleteBlog,
 };

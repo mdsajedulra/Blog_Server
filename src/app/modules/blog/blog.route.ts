@@ -13,6 +13,10 @@ blogRoutes.post(
   blogController.createBlog
 );
 
-blogRoutes.patch("/:id", blogController.updateBlog);
+blogRoutes.get("/", blogController.getBlogs);
+
+blogRoutes.patch("/:id", auth("user"), blogController.updateBlog);
+
+blogRoutes.delete("/:id", auth("user", "admin"), blogController.deleteBlog);
 
 export default blogRoutes;

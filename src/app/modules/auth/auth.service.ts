@@ -12,7 +12,9 @@ const register = (payload: IUser) => {
 // user login
 
 const login = async (payload: ILoginUser) => {
-  const user = await User.findOne({ email: payload?.email });
+  const user = await User.findOne({ email: payload?.email }).select(
+    "+password"
+  );
   if (!user) {
     throw new Error("User not Found");
   }
@@ -32,7 +34,13 @@ const login = async (payload: ILoginUser) => {
     expiresIn: "1d",
   });
 
-  return { token, user };
+  const verifiedUser = {
+    name: user?.name,
+    email: user?.email,
+    role: user?.role,
+  };
+
+  return { token, verifiedUser };
 };
 
 export const authServices = {

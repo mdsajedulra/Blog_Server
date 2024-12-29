@@ -7,11 +7,16 @@ import { userValidation } from "../user/user.validation";
 
 const authRouter = Router();
 
+// user registation route
+
 authRouter.post(
   "/register",
   validateRequest(userValidation.UserSchema),
   authControllers.register
 );
+
+//user login route
+
 authRouter.post(
   "/login",
   validateRequest(authValidation.loginValidationSchema),

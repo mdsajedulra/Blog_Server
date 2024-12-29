@@ -28,7 +28,7 @@ const login = catchAsync(async (req, res, next) => {
   sendResponse(res, {
     success: true,
     statudeCode: StatusCodes.CREATED,
-    message: "User registered successfully",
+    message: "Login successful",
     data: {
       token: result.token,
     },

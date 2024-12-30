@@ -17,6 +17,6 @@ blogRoutes.get("/", blogController.getBlogs);
 
 blogRoutes.patch("/:id", auth("user"), blogController.updateBlog);
 
-blogRoutes.delete("/:id", auth("user"), blogController.deleteBlog);
+blogRoutes.delete("/:id", auth("user", "admin"), blogController.deleteBlog);
 
 export default blogRoutes;

@@ -10,6 +10,11 @@ const UserSchema = new Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false },
     role: { type: String, enum: ["admin", "user"], default: "user" },
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     isBlocked: { type: Boolean, default: false },
   },
   { timestamps: true }

@@ -5,6 +5,7 @@ import { Blog } from "./blog.model";
 import jwt, { decode, JwtPayload } from "jsonwebtoken";
 import User from "../user/user.model";
 import { IUser } from "../user/user.interface";
+import QueryBuilder from "../../builder/querybuilder";
 
 const createBlog = async (payload: IUser) => {
   const result = await Blog.create(payload);
@@ -13,8 +14,11 @@ const createBlog = async (payload: IUser) => {
 
 // get all blogs
 
-const getBlogs = async () => {
-  const result = await Blog.find();
+const getBlogs = async (query: Record<string, unknown>) => {
+  const searchableFields = ["title", "content"];
+  const blogs = new QueryBuilder(Blog.find(), query).search(searchableFields);
+
+  const result = await blogs.modelQuery;
   return result;
 };
 

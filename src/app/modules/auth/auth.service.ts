@@ -28,7 +28,7 @@ const login = async (payload: ILoginUser) => {
     user?.password
   );
   if (!isPasswordMatch) {
-    throw new Error("Password incorrect");
+    throw new Error("Invalid credentials");
   }
   const token = jwt.sign({ email: user?.email, role: user?.role }, "secret", {
     expiresIn: "1d",

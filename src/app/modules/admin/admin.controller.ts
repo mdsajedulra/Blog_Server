@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unsafe-optional-chaining */
 import { StatusCodes } from "http-status-codes";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
@@ -13,7 +15,6 @@ const blockUser = catchAsync(async (req, res) => {
     success: true,
     statudeCode: StatusCodes.OK,
     message: "User blocked successfully",
-    data: result,
   });
 });
 
@@ -22,7 +23,7 @@ const blockUser = catchAsync(async (req, res) => {
 const deleteBlog = catchAsync(async (req, res) => {
   const id = req.params.id;
 
-  const token = req.headers.authorization;
+  const [Bearer, token] = req.headers.authorization?.split(" ");
 
   const payload = { id, token };
 

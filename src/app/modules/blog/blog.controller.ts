@@ -1,10 +1,28 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unsafe-optional-chaining */
 import { StatusCodes } from "http-status-codes";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { blogServices } from "./blog.service";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import User from "../user/user.model";
 
 const createBlog = catchAsync(async (req, res) => {
   const payload = req.body;
+
+  const [Bearer, token] = req.headers.authorization?.split(" ");
+
+  const decoded = jwt.verify(token, "secret") as JwtPayload;
+
+  const { email, role } = decoded;
+  console.log(email, role);
+
+  const user = await User.findOne({ email }); // find user by jwt decoded user email
+  console.log(user?._id);
+
+  payload.author = user?._id;
+
+  // console.log(Bearer, token);
 
   const result = await blogServices.createBlog(payload);
 
@@ -16,10 +34,10 @@ const createBlog = catchAsync(async (req, res) => {
   });
 });
 
-// get all block
+// get all blogs
 
 const getBlogs = catchAsync(async (req, res) => {
-  const result = await blogServices.getBlogs();
+  const result = await blogServices.getBlogs(req.query);
 
   sendResponse(res, {
     statudeCode: StatusCodes.OK,
@@ -33,7 +51,8 @@ const getBlogs = catchAsync(async (req, res) => {
 
 const updateBlog = catchAsync(async (req, res) => {
   const id = req.params.id;
-  const token = req.headers.authorization;
+  const [Bearer, token] = req.headers.authorization?.split(" "); // token and bearer extract from headers
+
   const updateData = req.body;
   const payload = { id, token, updateData };
 
@@ -51,7 +70,7 @@ const updateBlog = catchAsync(async (req, res) => {
 const deleteBlog = catchAsync(async (req, res) => {
   const id = req.params.id;
 
-  const token = req.headers.authorization;
+  const [Bearer, token] = req.headers.authorization?.split(" ");
 
   const payload = { id, token };
 

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Response } from "express";
+import { StatusCodes } from "http-status-codes";
 
 export const handlerZodError = (err: any, res: Response) => {
   const issues = err.issues.map((item: any) => {
@@ -11,8 +12,9 @@ export const handlerZodError = (err: any, res: Response) => {
 
   res.status(400).json({
     success: false,
-    message: err.message,
-    issues: issues,
+    message: "Validation error",
+    statusCode: StatusCodes.BAD_REQUEST,
     error: err,
+    stack: err.stack,
   });
 };

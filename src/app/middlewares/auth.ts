@@ -4,10 +4,10 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 
 const auth = (...requiredRole: string[]) =>
   catchAsync(async (req, res, next) => {
-    const authorization = req.headers.authorization;
+    const authorization = req.headers.authorization as string;
     // console.log(authorization?.split(" "));
 
-    const [Bearer, token] = authorization.split(" ");
+    const [Bearer, token] = authorization.split(" ") as string[];
     if (Bearer !== "Bearer" || !token) {
       throw new Error("You are not Authorized!");
     }

@@ -23,7 +23,7 @@ const blockUser = catchAsync(async (req, res) => {
 const deleteBlog = catchAsync(async (req, res) => {
   const id = req.params.id;
 
-  const [Bearer, token] = req.headers.authorization?.split(" ");
+  const [Bearer, token] = req.headers.authorization?.split(" ") as string[];
 
   const payload = { id, token };
 

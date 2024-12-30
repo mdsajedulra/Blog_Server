@@ -9,8 +9,9 @@ import User from "../user/user.model";
 
 const createBlog = catchAsync(async (req, res) => {
   const payload = req.body;
+  const authorization = req.headers;
 
-  const [Bearer, token] = req.headers.authorization?.split(" ");
+  const [, token] = authorization.authorization?.split(" ") as string[];
 
   const decoded = jwt.verify(token, "secret") as JwtPayload;
 
@@ -51,7 +52,7 @@ const getBlogs = catchAsync(async (req, res) => {
 
 const updateBlog = catchAsync(async (req, res) => {
   const id = req.params.id;
-  const [Bearer, token] = req.headers.authorization?.split(" "); // token and bearer extract from headers
+  const [Bearer, token] = req.headers.authorization?.split(" ") as string[]; // token and bearer extract from headers
 
   const updateData = req.body;
   const payload = { id, token, updateData };
@@ -70,7 +71,7 @@ const updateBlog = catchAsync(async (req, res) => {
 const deleteBlog = catchAsync(async (req, res) => {
   const id = req.params.id;
 
-  const [Bearer, token] = req.headers.authorization?.split(" ");
+  const [Bearer, token] = req.headers.authorization?.split(" ") as string[];
 
   const payload = { id, token };
 

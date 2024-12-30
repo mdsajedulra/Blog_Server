@@ -14,15 +14,57 @@ class QueryBuilder<T> {
   // search query on blogs
   search(searchableFields: string[]) {
     const search = this.query.search;
-    this.modelQuery = this.modelQuery.find({
-      $or: searchableFields.map((field: any) => ({
-        [field]: { $regex: search, $options: "i" },
-      })),
-    } as FilterQuery<T>);
+
+    if (search) {
+      this.modelQuery = this.modelQuery.find({
+        $or: searchableFields.map((field: any) => ({
+          [field]: { $regex: search, $options: "i" },
+        })),
+      } as FilterQuery<T>);
+    }
+
     return this;
   }
 
-  // sort query
+  filter() {
+    const queryObj = { ...this.query }; // copy query elements
+
+    const excludeFields = ["search", "sortBy", "sortOrder"];
+
+    excludeFields.forEach((el) => delete queryObj[el]);
+
+    const queryFilter = { author: queryObj?.filter };
+
+    // console.log("lenght", Object.keys(queryFilter).length);
+
+    if (Object.keys(queryFilter).length !== 1) {
+      this.modelQuery = this.modelQuery.find({ author: queryObj?.filter });
+    }
+
+    // console.log("after delete", queryObj);
+
+    return this;
+  }
+
+  sort() {
+    let sortStr;
+
+    if (this?.query?.sortBy && this?.query?.sortOrder) {
+      const sortBy = this?.query?.sortBy;
+
+      const sortOrder = this?.query?.sortOrder;
+
+      sortStr = `${sortOrder === "desc" ? "-" : ""}${sortBy}`;
+
+      // console.log(sortStr);
+
+      // const sortOrder = this?.query?.sortOrder;
+    }
+
+    this.modelQuery = this.modelQuery.sort(sortStr);
+
+    return this;
+  }
 }
 
 export default QueryBuilder;

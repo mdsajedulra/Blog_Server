@@ -16,9 +16,15 @@ const createBlog = async (payload: IUser) => {
 
 const getBlogs = async (query: Record<string, unknown>) => {
   const searchableFields = ["title", "content"];
-  const blogs = new QueryBuilder(Blog.find(), query).search(searchableFields);
 
+  const blogs = new QueryBuilder(Blog.find(), query)
+    .search(searchableFields)
+    .sort()
+    .filter();
+
+  // console.log(query);
   const result = await blogs.modelQuery;
+
   return result;
 };
 

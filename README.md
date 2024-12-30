@@ -100,7 +100,7 @@ npm run dev
 
 
 
-```bash
+
 ## Production Mode:
 
 npm run start

@@ -6,6 +6,9 @@ const auth = (...requiredRole: string[]) =>
   catchAsync(async (req, res, next) => {
     const authorization = req.headers.authorization as string;
     // console.log(authorization?.split(" "));
+    if (!authorization) {
+      throw new Error("Authorization Required");
+    }
 
     const [Bearer, token] = authorization.split(" ") as string[];
     if (Bearer !== "Bearer" || !token) {

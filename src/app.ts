@@ -1,8 +1,8 @@
 import express, { Application, Request, Response } from "express";
-import router from "./routes/routes";
+import router from "./app/routes/routes";
 import cors from "cors";
-import notFound from "./middlewares/notFound";
-import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import notFound from "./app/middlewares/notFound";
+import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
 
 const app: Application = express();
 app.use(express.json());

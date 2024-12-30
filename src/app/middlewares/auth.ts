@@ -25,7 +25,7 @@ const auth = (...requiredRole: string[]) =>
     }
     req.user = decoded as JwtPayload;
 
-    console.log("nosto token", token);
+    // console.log("nosto token", token);
 
     next();
   });

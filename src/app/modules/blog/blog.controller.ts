@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unsafe-optional-chaining */
+
 import { StatusCodes } from "http-status-codes";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
@@ -16,10 +16,10 @@ const createBlog = catchAsync(async (req, res) => {
   const decoded = jwt.verify(token, "secret") as JwtPayload;
 
   const { email, role } = decoded;
-  console.log(email, role);
+  // console.log(email, role);
 
   const user = await User.findOne({ email }); // find user by jwt decoded user email
-  console.log(user?._id);
+  // console.log(user?._id);
 
   payload.author = user?._id;
 

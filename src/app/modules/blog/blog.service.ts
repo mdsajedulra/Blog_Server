@@ -52,6 +52,8 @@ const updateBlog = async (payload: any) => {
         });
 
         return result;
+      } else {
+        throw new Error("Your are not allow to delete this blog");
       }
     } catch (error: any) {
       throw new Error(error.message);
@@ -95,6 +97,8 @@ const deleteBlog = async (payload: any) => {
         const result = await Blog.findByIdAndDelete(id);
 
         return result;
+      } else {
+        throw new Error("Your are not allow to delete this blog");
       }
     } catch (error: any) {
       throw new Error("Something went worng");

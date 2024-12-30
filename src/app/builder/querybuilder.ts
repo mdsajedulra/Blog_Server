@@ -33,13 +33,13 @@ class QueryBuilder<T> {
 
     excludeFields.forEach((el) => delete queryObj[el]);
 
-    const queryFilter = { author: queryObj?.filter };
+    if (queryObj.filter) {
+      const queryFilter = { author: queryObj?.filter };
+
+      this.modelQuery = this.modelQuery.find(queryFilter);
+    }
 
     // console.log("lenght", Object.keys(queryFilter).length);
-
-    if (Object.keys(queryFilter).length !== 1) {
-      this.modelQuery = this.modelQuery.find({ author: queryObj?.filter });
-    }
 
     // console.log("after delete", queryObj);
 

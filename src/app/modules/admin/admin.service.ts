@@ -8,21 +8,24 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 // block user
 
 const blockUser = async (payload: any) => {
-  //   console.log(payload);
+  // console.log(payload);
 
   const userBlock = await User.findById(payload);
-  //   console.log(userBlock);
 
-  if (userBlock?.isBlocked === true) {
+  // console.log(userBlock);
+
+  if (userBlock === null) {
+    throw new Error("User not Found ");
+  } else if (userBlock?.isBlocked === true) {
     throw new Error("User Already Blocked");
+  } else {
+    const result = await User.findByIdAndUpdate(
+      payload,
+      { isBlocked: true },
+      { new: true }
+    );
+    return result;
   }
-
-  const result = await User.findByIdAndUpdate(
-    payload,
-    { isBlocked: true },
-    { new: true }
-  );
-  return result;
 };
 
 // delete blogs

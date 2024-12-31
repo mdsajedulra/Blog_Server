@@ -95,7 +95,7 @@ MONGO_URI=<your_mongodb_connection_string>
 ### 4. Run the Application
 ## Development Mode:
 npm run dev
-```
+
 
 
 
@@ -104,9 +104,11 @@ npm run dev
 ## Production Mode:
 
 npm run start
+
 ```
 
 ## 🔗 live Link
 
 https://assignment-03-blog-webiste-backend.vercel.app
+
 ````

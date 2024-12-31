@@ -9,7 +9,10 @@ import { adminService } from "./admin.service";
 
 const blockUser = catchAsync(async (req, res) => {
   const userId = req.params.userId;
+
   const result = await adminService.blockUser(userId);
+
+  // console.log("controller", result);
 
   sendResponse(res, {
     success: true,
